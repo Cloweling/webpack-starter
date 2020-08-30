@@ -1,11 +1,10 @@
-const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {merge} = require('webpack-merge');
+const common = require('./webpack.common');
 
-module.exports = {
+module.exports = merge(common, {
     mode: 'production',
     optimization: {
         minimizer: [new OptimizeCssAssetsPlugin()]
@@ -30,25 +29,6 @@ module.exports = {
                     'css-loader'    
                 ]
             },
-            {
-                test: /\.html$/,
-                loader: 'html-loader',
-                options: {
-                    attributes: false,
-                    minimize: false
-                }
-            },
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            esModule: false
-                        }
-                    }
-                ]
-            },
             { 
                 test: /\.js$/, 
                 exclude: /node_modules/, 
@@ -60,20 +40,10 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebPackPlugin({
-            template: './src/index.html',
-            filename: './index.html'
-        }),
         new MiniCSSExtractPlugin({
             filename: 'app.[contentHash].css',
             ignoreOreder: false
         }),
-        new CopyPlugin({
-            patterns:  [
-                { from: 'src/assets', to: 'assets' }
-            ]
-        }),
-        new MinifyPlugin(),
-        new CleanWebpackPlugin()
+        new MinifyPlugin()
     ]
-}
+});

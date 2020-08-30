@@ -1,7 +1,7 @@
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const {merge} = require('webpack-merge');
+const common = require('./webpack.common');
 
-module.exports = {
+module.exports = merge(common, {
     mode: 'development',
     module: {
         rules: [
@@ -12,36 +12,7 @@ module.exports = {
                     'css-loader'    
                 ]
             },
-            {
-                test: /\.html$/,
-                loader: 'html-loader',
-                options: {
-                    attributes: false,
-                    minimize: false
-                }
-            },
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            esModule: false
-                        }
-                    }
-                ]
-            }
         ]
     },
-    plugins: [
-        new HtmlWebPackPlugin({
-            template: './src/index.html',
-            filename: './index.html'
-        }),
-        new CopyPlugin({
-            patterns:  [
-                { from: 'src/assets', to: 'assets' }
-            ]
-        })
-    ]
-}
+    plugins: []
+});
