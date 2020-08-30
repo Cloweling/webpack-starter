@@ -39,4 +39,4 @@ module.exports = {
         }),
         new CleanWebpackPlugin()
     ]
-}
+};
