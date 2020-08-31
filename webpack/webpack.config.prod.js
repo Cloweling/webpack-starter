@@ -3,6 +3,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const {merge} = require('webpack-merge');
 const common = require('./webpack.common');
+const autoprefixer = require('autoprefixer');
 
 module.exports = merge(common, {
     mode: 'production',
@@ -19,7 +20,8 @@ module.exports = merge(common, {
                 exclude: /styles\.css$/,
                 use: [
                     'style-loader',
-                    'css-loader'    
+                    'css-loader',
+                    'postcss-loader'  
                 ]
             },
             {
@@ -27,7 +29,8 @@ module.exports = merge(common, {
                 use: [
                     MiniCSSExtractPlugin.loader,
                     'css-loader',
-                    'sass-loader'   
+                    'sass-loader'   ,
+                    'postcss-loader'
                 ]
             },
             { 
@@ -37,7 +40,6 @@ module.exports = merge(common, {
                     'babel-loader'
                 ]
             }
-
         ]
     },
     plugins: [
